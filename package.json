@@ -1,0 +1,15 @@
+{
+  "name": "require-mocking",
+  "version": "1.0.0",
+  "description": "A small utility for mocking dependencies in RequireJS based projects",
+  "main": "index.js",
+  "scripts": {
+    "test": "npm test"
+  },
+  "author": "Morgan Roderick",
+  "license": "MIT",
+  "devDependencies": {
+    "mocha": "~1.18.2",
+    "requirejs": "~2.1.11"
+  }
+}
