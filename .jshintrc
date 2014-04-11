@@ -36,6 +36,7 @@
         "requirejs",
         "console",
         "define",
-        "require"
+        "require",
+        "module"
     ]
 }

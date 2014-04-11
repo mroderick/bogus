@@ -1,15 +1,18 @@
 {
-  "name": "require-mocking",
-  "version": "1.0.0-dev",
-  "description": "A small utility for mocking dependencies in RequireJS based projects",
-  "main": "bogus.js",
-  "scripts": {
-    "test": "npm test"
-  },
-  "author": "Morgan Roderick",
-  "license": "MIT",
-  "devDependencies": {
-    "mocha": "~1.18.2",
-    "requirejs": "~2.1.11"
-  }
+    "name": "require-mocking",
+    "version": "1.0.0-dev",
+    "description": "A small utility for mocking dependencies in RequireJS based projects",
+    "main": "bogus.js",
+    "scripts": {
+        "test": "$(npm bin)/mocha"
+    },
+    "author": "Morgan Roderick",
+    "license": "MIT",
+    "devDependencies": {
+        "mocha": "~1.18.2",
+        "requirejs": "~2.1.11",
+        "jshint": "~2.5.0",
+        "grunt": "~0.4.4",
+        "grunt-contrib-jshint": "~0.10.0"
+    }
 }

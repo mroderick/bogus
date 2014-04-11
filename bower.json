@@ -1,20 +1,20 @@
 {
-  "name": "bogus",
-  "main": "bogus.js",
-  "version": "1.0.0-dev",
-  "authors": [
-    "Morgan Roderick <morgan@roderick.dk>"
-  ],
-  "description": "A small utility for mocking dependencies in RequireJS based projects",
-  "moduleType": [
-    "amd"
-  ],
-  "license": "MIT",
-  "ignore": [
-    "**/.*",
-    "node_modules",
-    "bower_components",
-    "test",
-    "tests"
-  ]
+    "name": "bogus",
+    "main": "bogus.js",
+    "version": "1.0.0-dev",
+    "authors": [
+        "Morgan Roderick <morgan@roderick.dk>"
+    ],
+    "description": "A small utility for mocking dependencies in RequireJS based projects",
+    "moduleType": [
+        "amd"
+    ],
+    "license": "MIT",
+    "ignore": [
+        "**/.*",
+        "node_modules",
+        "bower_components",
+        "test",
+        "tests"
+    ]
 }
