@@ -1,29 +1,40 @@
 'use strict';
-var requirejs = require('requirejs');
+
+var requirejs = require('requirejs'),
+    assert = require('assert');
+
 requirejs.config({
     baseUrl: '.',
     nodeRequire: require
 });
 
-describe('Something', function() {
-    var foo;
+describe('Something', function(){
+    var bogus;
 
-    before(function(done) {
-        // This saves the module foo for use in tests. You have to use
-        // the done callback because this is asynchronous.
-        requirejs(['src/foo'],
-            function(mod) {
-                console.log('fired!');
-                foo = mod;
-                done();
-            });
+    before(function(done){
+        requirejs(['bogus'], function(mod){
+            bogus = mod;
+            done();
+        });
     });
 
-    describe('blah', function() {
-        it('blah', function() {
-            if (foo.test !== 'test'){
-                throw new Error('failed!');
-            }
+    describe('bogus module', function(){
+        describe('stub method', function(){
+            it('should be a function', function(){
+                assert(typeof bogus.stub === 'function');
+            });
+        });
+
+        describe('requireWithStubs method', function(){
+            it('should be a function', function(){
+                assert(typeof bogus.requireWithStubs === 'function');
+            });
+        });
+
+        describe('reset method', function(){
+            it('should be a function', function(){
+                assert(typeof bogus.reset === 'function');
+            });
         });
     });
 });

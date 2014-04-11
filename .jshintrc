@@ -33,6 +33,7 @@
         "after",
         "afterEach",
         "it",
+        "requirejs",
         "console",
         "define",
         "require"
