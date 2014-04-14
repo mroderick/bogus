@@ -1,27 +1,50 @@
-// derived from http://www.symphonious.net/2013/07/08/injecting-stubsmocks-into-tests-with-require-js/
 define(['require'], function(require){
+
     'use strict';
 
-    var stubbed = [];
+    // this is needed so we can stub define, when testing bogus
+    if (!requirejs.define){
+        requirejs.define = define;
+    }
+
+    var stubbed = [],
+        originals = {};
 
     function stub(name, implementation){
+        if (stubbed.indexOf(name) !== -1){
+            throw new Error('Cannot stub module "' + name + '" twice');
+        }
+
+        if (requirejs.defined(name) && !originals[name]){
+            originals[name] = requirejs(name);
+        }
+
         stubbed.push(name);
+
         requirejs.undef(name);
-        define(name, [], function(){
+
+        requirejs.define(name, [], function(){
             return implementation;
         });
     }
 
-    function requireWithStubs(name, callback){
+    function requireWithStubs(name, callback, errback){
         stubbed.push(name);
         requirejs.undef(name);
-        require([name], callback);
+        require([name], callback, errback);
     }
 
     function reset(){
         stubbed.forEach(function(name){
             requirejs.undef(name);
+
+            if (originals[name]){
+                requirejs.define(name, [], function(){
+                    return originals[name];
+                });
+            }
         });
+
         stubbed = [];
     }
 
