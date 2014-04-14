@@ -28,11 +28,13 @@
 
     "predef": [
         "describe",
+        "xdescribe",
         "before",
         "beforeEach",
         "after",
         "afterEach",
         "it",
+        "xit",
         "requirejs",
         "console",
         "define",
