@@ -23,15 +23,63 @@ Usage
 
 ```javascript
 
+// SteeringWheel
+define('SteeringWheel', function(){
+    function SteeringWheel(){
+        this.color = 'black';
+    }
+
+    return SteeringWheel;
+});
+
+// Car
+define('Car', ['SteeringWheel'], function(SteeringWheel){
+    function Car(){
+        this.steeringWheel = new SteeringWheel();
+    }
+
+    Car.prototype.getSteeringWheelColor = function getSteeringWheelColor(){
+        return this.steeringWheel.color;
+    }
+
+    return Car;
+});
+
 // load bogus
 define([
     'bower_components/bogus/bogus'  // this is ofc. dependent on where you installed it
 ], function(
     bogus
 ){
+    describe('myModule', function{
+        var Car;
 
+        beforeEach(function(done){
+            var fakeSteeringWheel = function(){
+                this.color = 'blue';
+            };
+
+            // stub out a dependency (SteeringWheel) with our fake
+            bogus.stub('SteeringWheel', fakeSteeringWheel);
+
+            // load Car module, that depends on SteeringWheel
+            bogus.requireWithStubs('Car', function(module){
+                Car = module;
+                done();
+            });
+        });
+
+        describe('Car', function(){
+            describe('getSteeringWheelColor method', function(){
+                it('should return the actual color of the SteeringWheel', function(){
+                    var car = new Car();
+
+                    assert.equal(car.getSteeringWheelColor(), 'blue');
+                });
+            });
+        });
+    });
 });
-
 ```
 
 
