@@ -1,7 +1,7 @@
 {
   "name": "require-mocking",
-  "version": "1.0.0-dev",
-  "description": "A small utility for mocking dependencies in RequireJS based projects",
+  "version": "0.1.0",
+  "description": "A small utility for stubbing dependencies in RequireJS based projects",
   "main": "bogus.js",
   "scripts": {
     "test": "grunt test"
