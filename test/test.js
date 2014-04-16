@@ -3,7 +3,8 @@
 
     var requirejs = require('requirejs'),
         assert    = require('assert'),
-        sinon     = require('sinon');
+        sinon     = require('sinon'),
+        Q         = require('q');
 
     requirejs.config({
         baseUrl: '.',
@@ -22,29 +23,32 @@
     }
 
     describe('bogus module', function(){
-        var bogus;
+        var bogus, stubModule;
 
         before(function(done){
             requirejs(['bogus'], function(mod){
                 bogus = mod;
+                stubModule = Q.denodeify(bogus.stub);
                 done();
             });
         });
 
-        afterEach(function(){
+        afterEach(function(done){
             sandbox.restore();
-            bogus.reset();
+            bogus.reset(done);
         });
 
         describe('stub method', function(){
-            it('should not accept the same name twice', function(){
+            it('should not accept the same name twice', function(done){
                 var name = 'some/arbitrary/name';
 
-                bogus.stub(name, {});
+                var stubbing = stubModule(name, {});
 
-                assert.throws(function(){
-                    bogus.stub(name, {});
-                });
+                stubbing.then(function(){
+                    assert.throws(function(){
+                        bogus.stub(name, {}, function(){});
+                    });
+                }).nodeify(done);
             });
 
             it('should replace the implementation for a stubbed name', function(done){
@@ -55,13 +59,13 @@
 
                 define(name, originalModule);
 
-                bogus.stub(name, stub);
-
-                requirejs([name], function(module){
-                    assert.notEqual(module, originalModule);
-                    assert.equal(module, stub);
-                    done();
-                });
+                stubModule(name, stub).then(function(){
+                    requirejs([name], function(module){
+                        assert.notEqual(module, originalModule);
+                        assert.equal(module, stub);
+                        done();
+                    });
+                }).catch(done);
             });
         });
 
@@ -72,13 +76,14 @@
         });
 
         describe('reset method', function(){
-            it('should return all original implementations to their names', function(){
+            it('should return all original implementations to their names', function(done){
                 var define = requirejs.define,
                     modules = [],
                     i, j, module,
-                    defineStub;
+                    defineStub,
+                    stubPromises = [];
 
-                sandbox.stub(requirejs, 'defined', function(name){
+                sandbox.stub(requirejs, 'defined', function(){
                     return true;
                 });
 
@@ -90,24 +95,27 @@
                     };
 
                     define(module.name, module.originalImplementation);
-                    bogus.stub(module.name, module.stubImplementation);
+                    stubPromises.push(stubModule(module.name, module.stubImplementation));
 
                     modules.push(module);
                 }
 
-                defineStub = sandbox.stub(requirejs, 'define');
+                Q.all(stubPromises).then(function(){
+                    defineStub = sandbox.stub(requirejs, 'define');
 
-                bogus.reset();
+                    bogus.reset(function(){
+                        j = 0;
+                        modules.forEach(function(module, index){
+                            var call = defineStub.getCall(index);
 
-                j = 0;
-                modules.forEach(function(module, index){
-                    var call = defineStub.getCall(index);
+                            assert.equal(call.args[0], module.name);
+                            j++;
+                        });
 
-                    assert.equal(call.args[0], module.name);
-                    j++;
-                });
+                        assert.equal(j, modules.length);
+                    });
 
-                assert.equal(j, modules.length);
+                }).nodeify(done);
             });
         });
     });

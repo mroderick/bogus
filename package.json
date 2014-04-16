@@ -16,6 +16,7 @@
     "grunt-contrib-jshint": "~0.10.0",
     "sinon": "~1.9.1",
     "grunt-mocha-test": "~0.10.2",
-    "grunt-cli": "~0.1.13"
+    "grunt-cli": "~0.1.13",
+    "q": "~1.0.1"
   }
 }
