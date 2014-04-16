@@ -1,6 +1,8 @@
 bogus
 ======================
 
+[![Build Status](https://travis-ci.org/mroderick/bogus.svg)](https://travis-ci.org/mroderick/bogus)
+
 bogus is a small utility for mocking dependencies when testing [RequireJS](http://requirejs.org) based projects
 
 Getting bogus
