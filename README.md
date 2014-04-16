@@ -62,14 +62,19 @@ define([
             };
 
             // stub out a dependency (SteeringWheel) with our fake
-            bogus.stub('SteeringWheel', fakeSteeringWheel);
-
-            // load Car module, that depends on SteeringWheel
-            bogus.requireWithStubs('Car', function(module){
-                Car = module;
-                done();
+            bogus.stub('SteeringWheel', fakeSteeringWheel, function(){
+                // load Car module, that depends on SteeringWheel
+                bogus.requireWithStubs('Car', function(module){
+                    Car = module;
+                    done();
+                });
             });
+
         });
+
+        afterEach(function(done){
+            bogus.reset(done);
+        })
 
         describe('Car', function(){
             describe('getSteeringWheelColor method', function(){
