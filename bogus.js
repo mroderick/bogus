@@ -10,13 +10,9 @@ define(['require'], function(require){
     var stubbed = [],
         originals = {};
 
-    function stub(name, implementation, done){
+    function stub(name, implementation){
         if (stubbed.indexOf(name) !== -1){
             throw new Error('Cannot stub module "' + name + '" twice');
-        }
-
-        if (typeof done !== 'function'){
-            throw new TypeError('bogus.stub needs a done argument');
         }
 
         if (requirejs.defined(name) && !originals[name]){
@@ -30,21 +26,27 @@ define(['require'], function(require){
         requirejs.define(name, [], function(){
             return implementation;
         });
-
-        // require the module in order to trigger requirejs to commit to defining it
-        require([name], function(){
-            done();
-        }, done);
     }
 
     function requireWithStubs(name, callback, errback){
-        stubbed.push(name);
+        // Cache the current index of the module in the array.
+        var moduleIndex = stubbed.push(name) - 1;
+
         requirejs.undef(name);
-        require([name], callback, errback);
+
+        // Require all the dependencies to ensure that they're registered.
+        require(stubbed, function () {
+            callback(arguments[moduleIndex]); // Return the required module.
+        }, errback);
     }
 
     function reset(callback){
         var originalsToRestore = [];
+
+        if (stubbed.length === 0) {
+            callback();
+            return;
+        }
 
         stubbed.forEach(function(name){
             requirejs.undef(name);
@@ -61,7 +63,7 @@ define(['require'], function(require){
         require(originalsToRestore, function(){
             stubbed = [];
             callback();
-        }, callback);
+        });
     }
 
     return {

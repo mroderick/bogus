@@ -23,12 +23,11 @@
     }
 
     describe('bogus module', function(){
-        var bogus, stubModule;
+        var bogus;
 
         before(function(done){
             requirejs(['bogus'], function(mod){
                 bogus = mod;
-                stubModule = Q.denodeify(bogus.stub);
                 done();
             });
         });
@@ -39,16 +38,13 @@
         });
 
         describe('stub method', function(){
-            it('should not accept the same name twice', function(done){
+            it('should not accept the same name twice', function(){
                 var name = 'some/arbitrary/name';
 
-                var stubbing = stubModule(name, {});
-
-                stubbing.then(function(){
-                    assert.throws(function(){
-                        bogus.stub(name, {}, function(){});
-                    });
-                }).nodeify(done);
+                bogus.stub(name, {});
+                assert.throws(function(){
+                    bogus.stub(name, {});
+                });
             });
 
             it('should replace the implementation for a stubbed name', function(done){
@@ -57,15 +53,15 @@
                     originalModule = {},
                     stub = {};
 
-                define(name, originalModule);
+                define(name, [], function () { return originalModule; });
 
-                stubModule(name, stub).then(function(){
-                    requirejs([name], function(module){
-                        assert.notEqual(module, originalModule);
-                        assert.equal(module, stub);
-                        done();
-                    });
-                }).catch(done);
+                bogus.stub(name, stub);
+
+                requirejs([name], function(module){
+                    assert.notEqual(module, originalModule);
+                    assert.equal(module, stub);
+                    done();
+                });
             });
         });
 
@@ -79,9 +75,9 @@
             it('should return all original implementations to their names', function(done){
                 var define = requirejs.define,
                     modules = [],
+                    moduleNames = [],
                     i, j, module,
-                    defineStub,
-                    stubPromises = [];
+                    defineStub;
 
                 sandbox.stub(requirejs, 'defined', function(){
                     return true;
@@ -90,19 +86,19 @@
                 for (i = 0; i < 10; i++){
                     module = {
                         name : getUniqueModuleName(),
-                        originalImplementation : {},
-                        stubImplementation : {}
+                        originalImplementation : {name: 'original'},
+                        stubImplementation : {name: 'stub'}
                     };
 
                     define(module.name, module.originalImplementation);
-                    stubPromises.push(stubModule(module.name, module.stubImplementation));
+                    bogus.stub(module.name, module.stubImplementation);
 
                     modules.push(module);
+                    moduleNames.push(module.name);
                 }
 
-                Q.all(stubPromises).then(function(){
-                    defineStub = sandbox.stub(requirejs, 'define');
-
+                defineStub = sandbox.spy(requirejs, 'define');
+                requirejs(moduleNames, function () {
                     bogus.reset(function(){
                         j = 0;
                         modules.forEach(function(module, index){
@@ -113,9 +109,10 @@
                         });
 
                         assert.equal(j, modules.length);
-                    });
 
-                }).nodeify(done);
+                        done();
+                    });
+                });
             });
         });
     });
