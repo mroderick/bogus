@@ -3,8 +3,7 @@
 
     var requirejs = require('requirejs'),
         assert    = require('assert'),
-        sinon     = require('sinon'),
-        Q         = require('q');
+        sinon     = require('sinon');
 
     requirejs.config({
         baseUrl: '.',
