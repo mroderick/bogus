@@ -10,15 +10,18 @@ define(['require'], function(require){
     var stubbed = [],
         originals = {};
 
+    function preserveDefinition(name){
+        if (requirejs.defined(name) && !originals[name]){
+            originals[name] = requirejs(name);
+        }
+    }
+
     function stub(name, implementation){
         if (stubbed.indexOf(name) !== -1){
             throw new Error('Cannot stub module "' + name + '" twice');
         }
 
-        if (requirejs.defined(name) && !originals[name]){
-            originals[name] = requirejs(name);
-        }
-
+        preserveDefinition(name);
         stubbed.push(name);
 
         requirejs.undef(name);
@@ -32,6 +35,7 @@ define(['require'], function(require){
         // Cache the current index of the module in the array.
         var moduleIndex = stubbed.push(name) - 1;
 
+        preserveDefinition(name);
         requirejs.undef(name);
 
         // Require all the dependencies to ensure that they're registered.
