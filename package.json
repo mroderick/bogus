@@ -1,6 +1,6 @@
 {
   "name": "bogus",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "A small utility for stubbing dependencies in RequireJS based projects",
   "main": "bogus.js",
   "scripts": {
