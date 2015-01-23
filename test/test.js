@@ -68,6 +68,42 @@
             it('should be a function', function(){
                 assert(typeof bogus.requireWithStubs === 'function');
             });
+
+            it('should stub deps on subsequent calls with loader plugin', function (done) {
+
+                var loaderName = getUniqueModuleName(),
+                    parentName = getUniqueModuleName(),
+                    depName = getUniqueModuleName(),
+                    define = requirejs.define,
+                    depModule = {},
+                    depStub1 = {id: 1},
+                    depStub2 = {id: 2};
+
+                define(loaderName, {
+                    load: function (name, parentRequire, load) {
+                        parentRequire([name], function (value) {
+                            load(value);
+                        });
+                    }
+                });
+                define(parentName, [depName], function (dep) {
+                    return {dep: dep};
+                });
+                define(depName, depModule);
+
+                bogus.stub(depName, depStub1);
+                bogus.requireWithStubs(loaderName + '!' + parentName, function (module) {
+                    assert.strictEqual(module.dep, depStub1);
+                    bogus.reset(function () {
+                        bogus.stub(depName, depStub2);
+                        bogus.requireWithStubs(loaderName + '!' + parentName, function (module) {
+                            assert.strictEqual(module.dep, depStub2);
+                            done();
+                        });
+                    });
+                });
+            });
+
         });
 
         describe('reset method', function(){
