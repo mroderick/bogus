@@ -1,7 +1,7 @@
 {
   "name": "bogus",
   "main": "bogus.js",
-  "version": "0.3.1",
+  "version": "0.3.2",
   "authors": [
     "Morgan Roderick <morgan@roderick.dk>"
   ],
