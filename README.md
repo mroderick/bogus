@@ -1,7 +1,5 @@
-bogus
+bogus [![Build Status](https://travis-ci.org/mroderick/bogus.svg)](https://travis-ci.org/mroderick/bogus)[![Dev dependencies](https://david-dm.org/mroderick/bogus#info=devDependencies&view=table)](https://david-dm.org/mroderick/bogus/dev-status.svg)
 ======================
-
-[![Build Status](https://travis-ci.org/mroderick/bogus.svg)](https://travis-ci.org/mroderick/bogus)
 
 bogus is a small utility for stubbing dependencies when testing [RequireJS](http://requirejs.org) based projects
 

@@ -9,13 +9,13 @@
   "author": "Morgan Roderick",
   "license": "MIT",
   "devDependencies": {
-    "mocha": "~1.18.2",
-    "requirejs": "~2.1.11",
-    "jshint": "~2.5.0",
     "grunt": "~0.4.4",
-    "grunt-contrib-jshint": "~0.10.0",
-    "sinon": "~1.9.1",
-    "grunt-mocha-test": "~0.10.2",
-    "grunt-cli": "~0.1.13"
+    "grunt-cli": "~0.1.13",
+    "grunt-contrib-jshint": "^0.11.0",
+    "grunt-mocha-test": "^0.12.7",
+    "jshint": "^2.6.0",
+    "mocha": "^2.1.0",
+    "requirejs": "~2.1.11",
+    "sinon": "^1.12.2"
   }
 }
