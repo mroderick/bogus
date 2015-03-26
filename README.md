@@ -3,6 +3,10 @@ bogus [![Build Status](https://travis-ci.org/mroderick/bogus.svg)](https://travi
 
 bogus is a small utility for stubbing dependencies when testing [RequireJS](http://requirejs.org) based projects
 
+#### Link Seam
+
+In [Working Effectively with Legacy Code](http://www.informit.com/store/working-effectively-with-legacy-code-9780131177055), Michael Feathers describes *[Seams](http://www.informit.com/articles/article.aspx?p=359417)*. In the vernacular of that book, `bogus` would be considered a *Link Seam*.
+
 Getting bogus
 ----------------------
 
