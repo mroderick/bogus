@@ -1,5 +1,4 @@
-bogus [![Build Status](https://travis-ci.org/mroderick/bogus.svg)](https://travis-ci.org/mroderick/bogus) [![Dependency Status](https://david-dm.org/mroderick/bogus.svg)](https://david-dm.org/mroderick/bogus) [![Dependency status](https://david-dm.org/mroderick/bogus/dev-status.svg)](https://david-dm.org/mroderick/bogus#info=devDependencies&view=table)
-======================
+# bogus [![Build Status](https://travis-ci.org/mroderick/bogus.svg)](https://travis-ci.org/mroderick/bogus) [![Dependency Status](https://david-dm.org/mroderick/bogus.svg)](https://david-dm.org/mroderick/bogus) [![Dependency status](https://david-dm.org/mroderick/bogus/dev-status.svg)](https://david-dm.org/mroderick/bogus#info=devDependencies&view=table)
 
 bogus is a small utility for stubbing dependencies when testing [RequireJS](http://requirejs.org) based projects
 
@@ -22,8 +21,7 @@ or
 $ bower install bogus --save-dev
 ```
 
-Usage
-----------------------
+## Usage
 
 ```javascript
 
@@ -93,8 +91,7 @@ define([
 
 
 
-Development
-----------------------
+## Development
 
 You can run the tests with
 
@@ -110,11 +107,11 @@ $ mocha
 
 if you have [mocha](http://visionmedia.github.io/mocha/) installed as a global
 
-See also
-----------------------
+## See also
+
 * [Injecting Stubs/Mocks into Tests with Require.js](http://www.symphonious.net/2013/07/08/injecting-stubsmocks-into-tests-with-require-js/) - the blog post that laid the groundwork for what became bogus
 * [Squire.js](https://github.com/iammerrick/Squire.js/) - also stubs out RequireJS dependencies. I couldn't get it to stop [re-downloading all the dependencies for each test ... nor could someone else](https://github.com/iammerrick/Squire.js/issues/39)
 
-License
-----------------------
+## License
+
 MIT: <http://mrgnrdrck.mit-license.org>
