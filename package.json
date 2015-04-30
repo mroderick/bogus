@@ -2,6 +2,10 @@
   "name": "bogus",
   "version": "0.3.2",
   "description": "A small utility for stubbing dependencies in RequireJS based projects",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mroderick/bogus.git"
+  },
   "main": "bogus.js",
   "scripts": {
     "test": "grunt test"
