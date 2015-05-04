@@ -2,6 +2,10 @@ define(['require'], function(require){
 
     'use strict';
 
+    function isObject(value){
+        return Object.prototype.toString.call(value) === '[object Object]';
+    }
+
     // this is needed so we can stub define, when testing bogus
     if (!requirejs.define){
         requirejs.define = define;
@@ -29,6 +33,29 @@ define(['require'], function(require){
         requirejs.define(name, [], function(){
             return implementation;
         });
+    }
+
+    function stubOneOrMany(){
+        var stubOne  = typeof arguments[0] === 'string' && arguments[1] !== undefined,
+            stubMany = isObject(arguments[0]),
+            map = stubMany && arguments[0],
+            key;
+
+        if (stubOne){
+            stub(arguments[0], arguments[1]);
+            return;
+        }
+
+        if (stubMany){
+            for (key in map){
+                if (map.hasOwnProperty(key)){
+                    stub(key, map[key]);
+                }
+            }
+            return;
+        }
+
+        throw new Error('stub method expects either an Object as a map of names and implementations, or a single name/implementation pair as arguments');
     }
 
     function requireWithStubs(name, callback, errback){
@@ -71,7 +98,7 @@ define(['require'], function(require){
     }
 
     return {
-        stub: stub,
+        stub: stubOneOrMany,
         requireWithStubs: requireWithStubs,
         reset: reset
     };

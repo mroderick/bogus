@@ -62,6 +62,49 @@
                     done();
                 });
             });
+
+            it('should accept a map of stubs', function(done){
+                var define = requirejs.define,
+                    names = [
+                        getUniqueModuleName(),
+                        getUniqueModuleName(),
+                        getUniqueModuleName()
+                    ],
+                    originals = {},
+                    fakes = {};
+
+                // define all the modules, making sure they're all unique
+                names.forEach(function(name){
+                    var original = {
+                            name: name
+                        };
+
+                    originals[name] = original;
+
+                    define(name, [], function () { return original; });
+                });
+
+                // create the fakes
+                names.forEach(function(name){
+                    fakes[name] = {
+                        name: name
+                    };
+                });
+
+                bogus.stub(fakes);
+
+                // verify all the stubs
+                names.forEach(function(name, index){
+                    requirejs([name], function(module){
+                        assert.notEqual(module, originals[name]);
+                        assert.equal(module, fakes[name]);
+
+                        if (index === names.length - 1){
+                            done();
+                        }
+                    });
+                });
+            });
         });
 
         describe('requireWithStubs method', function(){

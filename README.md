@@ -88,8 +88,19 @@ define([
 });
 ```
 
+### Stub multiple dependencies
 
+If you're stubbing several dependencies, you can pass a map of them to `stub`
 
+```javascript
+var firstFake = {};
+var secondFake = {};
+
+bogus.stub({
+    'path/to/first/dependency': firstFake,
+    'path/to/second/dependency': secondFake
+});
+```
 
 ## Development
 
