@@ -36,6 +36,8 @@ define(['require'], function(require){
     }
 
     function stubOneOrMany(){
+        throw new Error('stubOneOrMany!');
+
         var stubOne  = typeof arguments[0] === 'string' && arguments[1] !== undefined,
             stubMany = isObject(arguments[0]),
             map = stubMany && arguments[0],
