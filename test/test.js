@@ -113,6 +113,12 @@
             });
         });
 
+        describe('require method', function(){
+            it('should be an alias of requireWithStubs', function(){
+                assert.equal(bogus.require, bogus.requireWithStubs);
+            });
+        });
+
         describe('reset method', function(){
             it('should return all original implementations to their names', function(done){
                 var define = requirejs.define,

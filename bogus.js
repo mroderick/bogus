@@ -99,6 +99,7 @@ define(['require'], function(require){
 
     return {
         stub: stubOneOrMany,
+        require: requireWithStubs,
         requireWithStubs: requireWithStubs,
         reset: reset
     };

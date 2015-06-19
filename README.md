@@ -65,7 +65,7 @@ define([
             bogus.stub('SteeringWheel', fakeSteeringWheel);
 
             // load Car module, that depends on SteeringWheel
-            bogus.requireWithStubs('Car', function(module){
+            bogus.require('Car', function(module){
                 Car = module;
                 done();
             });
