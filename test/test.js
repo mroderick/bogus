@@ -111,6 +111,13 @@
             it('should be a function', function(){
                 assert(typeof bogus.requireWithStubs === 'function');
             });
+
+            it('should return a promise', function(){
+                var p = bogus.requireWithStubs('blah', function(){}, function(){});
+
+                assert.equal(typeof p.then, 'function');
+                assert.equal(typeof p.catch, 'function');
+            });
         });
 
         describe('require method', function(){
@@ -120,18 +127,22 @@
         });
 
         describe('reset method', function(){
-            it('should return all original implementations to their names', function(done){
-                var define = requirejs.define,
-                    modules = [],
-                    moduleNames = [],
-                    i, j, module,
-                    defineStub;
+            var modules;
+            var defineStub;
+
+            beforeEach(function(done){
+                var define = requirejs.define;
+                var i;
+                var moduleNames = [];
+                var module;
+
+                modules = [];
 
                 sandbox.stub(requirejs, 'defined', function(){
                     return true;
                 });
 
-                for (i = 0; i < 10; i++){
+                for (i = 0; i < 10; i++) {
                     module = {
                         name : getUniqueModuleName(),
                         originalImplementation : {name: 'original'},
@@ -146,19 +157,41 @@
                 }
 
                 defineStub = sandbox.spy(requirejs, 'define');
-                requirejs(moduleNames, function () {
-                    bogus.reset(function(){
-                        j = 0;
-                        modules.forEach(function(module, index){
-                            var call = defineStub.getCall(index);
 
-                            assert.equal(call.args[0], module.name);
-                            j++;
-                        });
+                requirejs(moduleNames, function(){
+                    done();
+                });
+            });
 
-                        assert.equal(j, modules.length);
+            it('is a function', function(){
+                assert.equal(typeof bogus.reset, 'function');
+            });
 
-                        done();
+            it('returns a promise', function(){
+                var p = bogus.reset();
+
+                assert.equal(typeof p.then, 'function');
+                assert.equal(typeof p.catch, 'function');
+            });
+
+            it('returns all original implementations to their names and call a callback', function(done){
+                bogus.reset(function(){
+                    modules.forEach(function(module, index){
+                        var call = defineStub.getCall(index);
+
+                        assert.equal(call.args[0], module.name);
+                    });
+
+                    done();
+                });
+            });
+
+            it('returns all original implementations to their names and resolves a returned promise', function(){
+                return bogus.reset().then(function(){
+                    modules.forEach(function(module, index){
+                        var call = defineStub.getCall(index);
+
+                        assert.equal(call.args[0], module.name);
                     });
                 });
             });

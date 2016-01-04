@@ -42,7 +42,7 @@ define('Car', ['SteeringWheel'], function(SteeringWheel){
 
     Car.prototype.getSteeringWheelColor = function getSteeringWheelColor(){
         return this.steeringWheel.color;
-    }
+    };
 
     return Car;
 });
@@ -73,7 +73,7 @@ define([
 
         afterEach(function(done){
             bogus.reset(done);
-        })
+        });
 
         describe('Car', function(){
             describe('getSteeringWheelColor method', function(){
@@ -85,6 +85,29 @@ define([
             });
         });
     });
+});
+```
+
+### Promises
+
+Both `bogus.require` and `bogus.reset` return promises. The `beforeEach` and
+`afterEach` in the example above can be written as:
+
+```javascript
+beforeEach(function(){
+    var fakeSteeringWheel = function(){
+        this.color = 'blue';
+    };
+
+    bogus.stub('SteeringWheel', fakeSteeringWheel);
+
+    return bogus.require('Car').then(function(module){
+        Car = module;
+    });
+});
+
+afterEach(function(){
+    return bogus.reset();
 });
 ```
 
