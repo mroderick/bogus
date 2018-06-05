@@ -139,7 +139,7 @@ or with
 $ mocha
 ```
 
-if you have [mocha](http://visionmedia.github.io/mocha/) installed as a global
+if you have [mocha](http://mochajs.org/) installed as a global
 
 ## See also
 
